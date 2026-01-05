@@ -881,6 +881,10 @@ void spudec_draw_scaled(void *me, unsigned int dxs, unsigned int dys, void (*dra
   spudec_handle_t *spu = me;
   scale_pixel *table_x;
   scale_pixel *table_y;
+  
+  // SuSo: Fixes crash when closing a video with sub pictures drawing
+  if(spu == NULL)
+    return;
 
   if (spudec_visible(spu)) {
 
