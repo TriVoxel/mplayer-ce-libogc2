@@ -233,7 +233,7 @@ static void drawdone_cb(void)
 
 static void vblank_cb(u32 retraceCnt)
 {
-	if (vo_vsync && flip_pending && !VIDEO_GetNextField()) {
+	if (vo_vsync && flip_pending) {
 		VIDEO_SetNextFramebuffer(xfb[whichfb]);
 		VIDEO_Flush();
 		whichfb ^= 1;
