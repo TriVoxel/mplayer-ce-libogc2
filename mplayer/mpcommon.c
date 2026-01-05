@@ -45,6 +45,8 @@
 
 double sub_last_pts = -303;
 
+static int tmp_align = -1;
+
 extern void load_builtin_codecs();
 
 #ifdef CONFIG_ASS
@@ -273,6 +275,15 @@ void update_subtitles(sh_video_t *sh_video, double refpts, demux_stream_t *d_dvd
                         continue;
                     len -= p - packet;
                     packet = p;
+					
+					// Implement top aligned subs
+					if(tmp_align == -1)
+						tmp_align = sub_pos;
+					
+					if(memcmp(packet, "{\\an8", 5) == 0)
+						sub_pos = 20;
+					else
+						sub_pos = tmp_align;
                 }
                 sub_add_text(&subs, packet, len, endpts, 1);
                 set_osd_subtitle(&subs);
