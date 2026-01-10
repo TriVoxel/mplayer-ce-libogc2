@@ -1,6 +1,6 @@
 for %%A IN (*.mp4) do (
-"ffmpeg.exe"  -i "%%~A" -vf crop=1440:ih:240:0,scale='512:480:flags=lanczos',setdar='4/3' -vcodec libx264 -profile:v baseline -level:v 3.0 -vb 2000k -refs 1 -me_method umh -subq 6 -me_range 16 -g 60 -keyint_min 31 -sc_threshold 0 -mixed-refs 1 -rc-lookahead 60 -qcomp 0.50 -qmin 8 -qmax 51 -pix_fmt yuv420p -x264opts "fast-pskip=0:trellis=0:8x8dct=0:no-deblock:stitchable:vbv-maxrate=3000:vbv-bufsize=4000:interlaced=0" -an -f null -
-"ffmpeg.exe"  -i "%%~A" -vf crop=1440:ih:240:0,scale='512:480:flags=lanczos',setdar='4/3' -vcodec libx264 -profile:v baseline -level:v 3.0 -vb 2000k -refs 1 -me_method umh -subq 6 -me_range 16 -g 60 -keyint_min 31 -sc_threshold 0 -mixed-refs 1 -rc-lookahead 60 -qcomp 0.50 -qmin 8 -qmax 51 -pix_fmt yuv420p -x264opts "fast-pskip=0:trellis=0:8x8dct=0:no-deblock:stitchable:vbv-maxrate=3000:vbv-bufsize=4000:interlaced=0" -acodec libvorbis -ab 64k -ac 2 "GCN_OUTPUT/%%~A_gcn.mkv"
+"ffmpeg.exe"  -i "%%~A" -vf crop=1440:ih:240:0,scale='512:480:flags=lanczos',setdar='4/3' -vcodec libx264 -profile:v baseline -level:v 3.0 -vb 2000k -refs 1 -me_method umh -subq 6 -me_range 16 -g 60 -keyint_min 31 -sc_threshold 0 -mixed-refs 1 -rc-lookahead 60 -qcomp 0.50 -qmin 8 -qmax 51 -pix_fmt yuv420p -x264opts "fast-pskip=0:trellis=0:8x8dct=0:no-deblock:stitchable:vbv-maxrate=3000:vbv-bufsize=4000:interlaced=0" -pass 1 -an -f null -
+"ffmpeg.exe"  -i "%%~A" -vf crop=1440:ih:240:0,scale='512:480:flags=lanczos',setdar='4/3' -vcodec libx264 -profile:v baseline -level:v 3.0 -vb 2000k -refs 1 -me_method umh -subq 6 -me_range 16 -g 60 -keyint_min 31 -sc_threshold 0 -mixed-refs 1 -rc-lookahead 60 -qcomp 0.50 -qmin 8 -qmax 51 -pix_fmt yuv420p -x264opts "fast-pskip=0:trellis=0:8x8dct=0:no-deblock:stitchable:vbv-maxrate=3000:vbv-bufsize=4000:interlaced=0" -pass 2 -acodec libvorbis -ab 64k -ac 2 "GCN_OUTPUT/%%~A_gcn.mkv"
 echo  Converting video for GameCube...
 )
 PAUSE
@@ -33,7 +33,9 @@ PAUSE
 :: crop=1440:ih:240:0 = crop center 1920x1080 16/9 = 1440x1080 4/3
 :: crop=2880:ih:480:0 = same but with 4K
 :: crop=960:ih:322:0 = same but with 1280x720
+:: crop=1080:ih:180:0 = when the 1080p video is anamorphic, 1440x1080
 
+:: fieldmatch=order=tff:mode=pc,decimate=cycle=5 = when 30fps video is really 24fps
 
 :: AUDIO
 
