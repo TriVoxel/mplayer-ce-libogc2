@@ -1292,6 +1292,9 @@ void *spudec_new_scaled(unsigned int *palette, unsigned int frame_width, unsigne
        always maximum size i.e. 720 wide and 576 or 480 high */
     // For HD files in MKV the VobSub resolution can be higher though,
     // see largeres_vobsub.mkv
+
+	// SuSo: allow users to scale picture subs if they want
+#if 0
     if (this->orig_frame_width <= 720 && this->orig_frame_height <= 576) {
       this->orig_frame_width = 720;
       if (this->orig_frame_height == 480 || this->orig_frame_height == 240)
@@ -1299,6 +1302,7 @@ void *spudec_new_scaled(unsigned int *palette, unsigned int frame_width, unsigne
       else
         this->orig_frame_height = 576;
     }
+#endif
   }
   else
     mp_msg(MSGT_SPUDEC,MSGL_FATAL, "FATAL: spudec_init: calloc");
