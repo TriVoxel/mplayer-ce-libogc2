@@ -110,6 +110,8 @@ void mpviSetup(int video_mode, bool overscan)
 			break;
 		case 2:		// Progressive (480p)
 			vmode = &TVNtsc480Prog;
+			vmode->viTVMode &= ~VI_INTERLACE;
+			vmode->xfbMode = VI_XFBMODE_SF;
 			break;
 		case 3:		// PAL (50Hz)
 			vmode = &TVPal576IntDfScale;
@@ -196,14 +198,16 @@ void mpviSetup(int video_mode, bool overscan)
 	VIDEO_SetNextFramebuffer(xfb[whichfb]);
 	VIDEO_SetBlack(FALSE);
 	VIDEO_Flush();
-	
+
 	VIDEO_WaitVSync();
-	
-	if (vmode->viTVMode & VI_NON_INTERLACE)
-		VIDEO_WaitVSync();
-	else
-	    while (VIDEO_GetNextField())
-	    	VIDEO_WaitVSync();
+
+	if (vmode->viTVMode & VI_NON_INTERLACE) {
+		VIDEO_WaitVSync();               // progressive: 2 vsyncs
+	} 
+	else {
+		while (VIDEO_GetNextField())     // interlaced: sync to field boundary
+			VIDEO_WaitVSync();
+	}
 }
 
 void mpviClear()
